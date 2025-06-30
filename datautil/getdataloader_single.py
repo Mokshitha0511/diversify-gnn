@@ -56,3 +56,11 @@ def get_act_dataloader(args):
     train_loader, train_loader_noshuffle, valid_loader, target_loader = get_dataloader(
         args, tr, val, targetdata)
     return train_loader, train_loader_noshuffle, valid_loader, target_loader, tr, val, targetdata
+
+def get_shap_batch(loader, size=100):
+    X_val = []
+    for X, y in loader:
+        X_val.append(X)
+        if len(torch.cat(X_val)) >= size:
+            break
+    return torch.cat(X_val)[:size]
