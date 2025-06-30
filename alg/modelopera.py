@@ -41,3 +41,12 @@ def accuracy(network, loader, weights, usedpredict='p'):
     network.train()
 
     return correct / total
+def predict_proba(network, x):
+    network.eval()
+    with torch.no_grad():
+        logits = network.predict(x.cuda().float())
+        probs = torch.nn.functional.softmax(logits, dim=1)
+    network.train()
+    return probs
+
+    return correct / total
