@@ -14,7 +14,7 @@ from models.gnn_extractor import TemporalGCN, build_correlation_graph
 from diversify.utils.params import gnn_params
 
 # === SHAP imports ===
-from shap.shap_utils import (
+from shap_custom.shap_utils import (
     get_shap_explainer,
     compute_shap_values,
     _get_shap_array,
@@ -29,14 +29,14 @@ from shap.shap_utils import (
     log_shap_numpy,
     overlay_signal_with_shap
 )
-from shap.shap_utils_extended import (
+from shap_custom.shap_utils_extended import (
     compute_flip_rate,
     compute_confidence_change,
     compute_aopc,
     compute_feature_coherence,
     compute_shap_entropy
 )
-from shap.shap4D import (
+from shap_custom.shap4D import (
     plot_emg_shap_4d,
     compute_shap_channel_variance,
     compute_shap_temporal_entropy,
@@ -423,30 +423,30 @@ def main(args):
 
         print("\n🛠 Real-world Context: EMG classification can support gesture-based interfaces in prosthetics or rehabilitation systems, and insights from SHAP improve trust in deployed models.")
 
-    plt.figure(figsize=(12, 8))
-    plt.subplot(2, 1, 1)
-    plt.plot(logs['epoch'], logs['class_loss'], label="Class Loss", marker='o')
-    plt.plot(logs['epoch'], logs['dis_loss'], label="Dis Loss", marker='x')
-    plt.plot(logs['epoch'], logs['total_loss'], label="Total Loss", linestyle='--')
-    plt.title("Losses over Epochs")
-    plt.xlabel("Epoch")
-    plt.ylabel("Loss")
-    plt.legend()
-    plt.grid(True)
+        plt.figure(figsize=(12, 8))
+        plt.subplot(2, 1, 1)
+        plt.plot(logs['epoch'], logs['class_loss'], label="Class Loss", marker='o')
+        plt.plot(logs['epoch'], logs['dis_loss'], label="Dis Loss", marker='x')
+        plt.plot(logs['epoch'], logs['total_loss'], label="Total Loss", linestyle='--')
+        plt.title("Losses over Epochs")
+        plt.xlabel("Epoch")
+        plt.ylabel("Loss")
+        plt.legend()
+        plt.grid(True)
 
-    plt.subplot(2, 1, 2)
-    plt.plot(logs['epoch'], logs['train_acc'], label="Train Accuracy", marker='o')
-    plt.plot(logs['epoch'], logs['valid_acc'], label="Valid Accuracy", marker='x')
-    plt.plot(logs['epoch'], logs['target_acc'], label="Target Accuracy", linestyle='--')
-    plt.title("Accuracy over Epochs")
-    plt.xlabel("Epoch")
-    plt.ylabel("Accuracy")
-    plt.legend()
-    plt.grid(True)
+        plt.subplot(2, 1, 2)
+        plt.plot(logs['epoch'], logs['train_acc'], label="Train Accuracy", marker='o')
+        plt.plot(logs['epoch'], logs['valid_acc'], label="Valid Accuracy", marker='x')
+        plt.plot(logs['epoch'], logs['target_acc'], label="Target Accuracy", linestyle='--')
+        plt.title("Accuracy over Epochs")
+        plt.xlabel("Epoch")
+        plt.ylabel("Accuracy")
+        plt.legend()
+        plt.grid(True)
 
-    plt.tight_layout()
-    plt.savefig("training_metrics_plot.png", dpi=300)
-    plt.show()
+        plt.tight_layout()
+        plt.savefig("training_metrics_plot.png", dpi=300)
+        plt.show()
 
 
 if __name__ == '__main__':
