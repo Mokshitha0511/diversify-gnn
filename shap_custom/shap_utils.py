@@ -29,13 +29,11 @@ def compute_shap_values(explainer, inputs):
 
 def _get_shap_array(shap_values):
     if isinstance(shap_values, list):
-        # Handle case: list of numpy arrays (DeepExplainer in some versions)
-        if isinstance(shap_values[0], np.ndarray):
-            return shap_values[0]
-        # Handle case: list of SHAP values objects
-        return shap_values[0].values
-    # If it's not a list, assume it's a SHAP object
-    return shap_values.values
+        return shap_values[0].values if hasattr(shap_values[0], "values") else shap_values[0]
+    elif hasattr(shap_values, "values"):
+        return shap_values.values
+    else:
+        return shap_values
 
 
 # ✅ Summary plot
