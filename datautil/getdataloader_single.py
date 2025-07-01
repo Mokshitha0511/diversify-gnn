@@ -58,9 +58,23 @@ def get_act_dataloader(args):
     return train_loader, train_loader_noshuffle, valid_loader, target_loader, tr, val, targetdata
 
 def get_shap_batch(loader, size=100):
+    """
+    Extract a batch of data for SHAP analysis
+    Args:
+        loader: DataLoader to extract from
+        size: Number of samples to extract
+    Returns:
+        Concatenated tensor of input samples
+    """
     X_val = []
-    for X, y in loader:
-        X_val.append(X)
+    for batch in loader:
+        # Extract inputs from batch (could be tuple or tensor)
+        inputs = batch[0] if isinstance(batch, (list, tuple)) else batch
+        X_val.append(inputs)
+        
+        # Stop when we have enough samples
         if len(torch.cat(X_val)) >= size:
             break
+    
+    # Return exactly size samples
     return torch.cat(X_val)[:size]
