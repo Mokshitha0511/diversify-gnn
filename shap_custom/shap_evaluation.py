@@ -8,7 +8,7 @@ import numpy as np
 from alg.modelopera import predict_proba
 from alg.alg import get_algorithm_class
 from alg.algs.diversify import Diversify
-from shap_utils import (
+from .shap_utils import (
     get_shap_explainer,
     compute_shap_values,
     plot_summary,
