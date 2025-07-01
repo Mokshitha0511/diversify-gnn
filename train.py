@@ -14,7 +14,7 @@ from models.gnn_extractor import TemporalGCN, build_correlation_graph
 from diversify.utils.params import gnn_params
 
 # === SHAP imports ===
-from shap_custom.shap_utils import (
+from shap_custom import (
     get_shap_explainer,
     compute_shap_values,
     _get_shap_array,
@@ -27,16 +27,12 @@ from shap_custom.shap_utils import (
     compute_kendall_tau,
     cosine_similarity_shap,
     log_shap_numpy,
-    overlay_signal_with_shap
-)
-from shap_custom.shap_utils_extended import (
+    overlay_signal_with_shap,
     compute_flip_rate,
     compute_confidence_change,
     compute_aopc,
     compute_feature_coherence,
-    compute_shap_entropy
-)
-from shap_custom.shap4D import (
+    compute_shap_entropy,
     plot_emg_shap_4d,
     compute_shap_channel_variance,
     compute_shap_temporal_entropy,
