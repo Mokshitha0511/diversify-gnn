@@ -201,3 +201,14 @@ class Diversify(Algorithm):
             return self.ddiscriminator(self.dbottleneck(gnn_features))
         else:
             return self.ddiscriminator(self.dbottleneck(self.featurizer(x)))
+    
+    # New method for SHAP explainability
+    def explain(self, x):
+        """Safe forward pass for explainability tools"""
+        original_mode = self.explain_mode
+        try:
+            self.explain_mode = True
+            with torch.no_grad():
+                return self.predict(x)
+        finally:
+            self.explain_mode = original_mode
