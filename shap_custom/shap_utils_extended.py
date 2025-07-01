@@ -1,3 +1,4 @@
+from shap_custom.shap_utils import _get_shap_array
 
 # Additional SHAP Evaluation Metrics
 
@@ -16,7 +17,7 @@ def compute_confidence_change(base_preds, masked_preds):
 # ✅ AOPC (Area Over Perturbation Curve)
 def compute_aopc(model, inputs, shap_values, evaluate_fn, max_k=20):
     import numpy as np
-    shap_array = shap_values[0].values if isinstance(shap_values, list) else shap_values.values
+    shap_array = _get_shap_array(shap_values)
     base_preds = model.predict(inputs).detach().cpu().numpy()
     base_acc = np.mean(np.argmax(base_preds, axis=1) == np.argmax(base_preds, axis=1))
 
