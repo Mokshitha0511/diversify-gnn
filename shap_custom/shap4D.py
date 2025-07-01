@@ -60,7 +60,7 @@ def plot_4d_shap_surface(shap_values, output_path="shap_4d_surface.html", title=
     if isinstance(shap_values, list):
         shap_array = shap_values[0].values  # (N, C, T, A)
     else:
-        shap_array = shap_values.values     # (N, C, T, A)
+        shap_array = shap_values     # (N, C, T, A)
 
     sample = shap_array[0]  # shape: (C, T, A) or (1, T, A)
 
