@@ -14,10 +14,14 @@ from models.gnn_extractor import TemporalGCN, build_correlation_graph
 from diversify.utils.params import gnn_params
 
 # === SHAP imports ===
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
+import matplotlib.pyplot as plt
+import pandas as pd
+import numpy as np
+from shap_custom.shap_utils import _get_shap_array
 from shap_custom import (
     get_shap_explainer,
     compute_shap_values,
-    _get_shap_array,
     plot_summary,
     plot_force,
     evaluate_shap_impact,
@@ -58,6 +62,8 @@ def main(args):
     train_loader, train_loader_noshuffle, valid_loader, target_loader, _, _, _ = get_act_dataloader(args)
 
     best_valid_acc, target_acc = 0, 0
+    
+    logs = {k: [] for k in ['epoch', 'class_loss', 'dis_loss', 'total_loss', 'train_acc', 'valid_acc', 'target_acc', 'total_cost_time']}
 
     algorithm_class = alg.get_algorithm_class(args.algorithm)
     algorithm = algorithm_class(args).cuda()
@@ -203,6 +209,8 @@ def main(args):
 
             for key in loss_list:
                 results[key+'_loss'] = step_vals[key]
+            for key in logs:
+                logs[key].append(results.get(key, 0))
             if results['valid_acc'] > best_valid_acc:
                 best_valid_acc = results['valid_acc']
                 target_acc = results['target_acc']
@@ -240,7 +248,7 @@ def main(args):
 
         # 🔬 4D-specific visualization and metrics
         # ---- Plot EMG SHAP 4D ----
-        from shap4D import plot_4d_shap_surface
+        from shap_custom.shap4D import plot_4d_shap_surface
 
         try:
             plot_emg_shap_4d(X_eval, shap_array)
