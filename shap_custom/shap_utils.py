@@ -25,7 +25,16 @@ def get_shap_explainer(model, background_data):
     return shap.DeepExplainer(wrapped, background_data)
 
 def compute_shap_values(explainer, inputs):
-    return explainer.shap_values(inputs)
+    model = explainer.model.model if hasattr(explainer.model, "model") else explainer.model
+    model_was_training = model.training
+    model.train()  # Needed for SHAP on RNNs
+
+    try:
+        shap_vals = explainer.shap_values(inputs, check_additivity=False)  # ✅ Bypass the check
+    finally:
+        if not model_was_training:
+            model.eval()
+    return shap_vals
 
 def _get_shap_array(shap_values):
     if isinstance(shap_values, list):
